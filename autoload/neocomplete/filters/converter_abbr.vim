@@ -44,13 +44,13 @@ function! s:converter.filter(context) abort "{{{
 do
   local candidates = vim.eval('a:context.candidates')
   local max = vim.eval('g:neocomplete#max_keyword_width')
-  for i = 0, #candidates-1 do
+  for i = 1, #candidates do
     local abbr = candidates[i].abbr == nil and
       candidates[i].word or candidates[i].abbr
     if string.len(abbr) > max then
-      vim.command("let a:context.candidates[".. i .."].abbr = neocomplete#util#truncate_smart("..
-              "get(a:context.candidates[".. i .."], 'abbr', " ..
-              "a:context.candidates[".. i .."].word), g:neocomplete#max_keyword_width," ..
+      vim.command("let a:context.candidates[".. i-1 .."].abbr = neocomplete#util#truncate_smart("..
+              "get(a:context.candidates[".. i-1 .."], 'abbr', " ..
+              "a:context.candidates[".. i-1 .."].word), g:neocomplete#max_keyword_width," ..
               "g:neocomplete#max_keyword_width/2, '..')")
     end
   end

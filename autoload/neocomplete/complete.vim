@@ -104,7 +104,7 @@ function! neocomplete#complete#_get_words(sources, complete_pos, complete_str) a
     do
       local frequencies = vim.eval('frequencies')
       local candidates = vim.eval('words')
-      for i = 0, #candidates-1 do
+      for i = 1, #candidates do
         if frequencies[candidates[i].word] ~= nil then
           candidates[i].rank = frequencies[candidates[i].word]
         end
@@ -328,7 +328,7 @@ function! s:set_default_menu(words, source) abort "{{{
   do
     local candidates = vim.eval('a:words')
     local mark = vim.eval('a:source.mark') .. ' '
-    for i = 0, #candidates-1 do
+    for i = 1, #candidates do
       candidates[i].menu = mark .. (candidates[i].menu ~= nil and
                            candidates[i].menu or '')
     end
