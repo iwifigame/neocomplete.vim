@@ -23,17 +23,21 @@
 " }}}
 "=============================================================================
 
-let s:lastCol = col('.')
+let s:lastCol = -1
 let s:isBackspace = 0
 
 let s:save_cpo = &cpo
 set cpo&vim
 
 function! neocomplete#handler#_on_moved_i() abort "{{{
-  if col('.') > s:lastCol
-    let s:isBackspace = 0
-  else
+  if s:lastCol == -1
+    let s:lastCol = col('.')
+  endif
+
+  if col('.') < s:lastCol
     let s:isBackspace = 1
+  else
+    let s:isBackspace = 0
   endif
   let s:lastCol = col('.')
   
