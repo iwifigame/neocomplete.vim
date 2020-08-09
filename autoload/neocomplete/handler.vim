@@ -23,10 +23,24 @@
 " }}}
 "=============================================================================
 
+let s:lastCol = -1
+let s:isBackspace = 0
+
 let s:save_cpo = &cpo
 set cpo&vim
 
 function! neocomplete#handler#_on_moved_i() abort "{{{
+  if s:lastCol == -1
+    let s:lastCol = col('.')
+  endif
+
+  if col('.') < s:lastCol
+    let s:isBackspace = 1
+  else
+    let s:isBackspace = 0
+  endif
+  let s:lastCol = col('.')
+  
   let neocomplete = neocomplete#get_current_neocomplete()
   if neocomplete.linenr != line('.')
     call neocomplete#helper#clear_result()
@@ -64,6 +78,7 @@ function! neocomplete#handler#_on_complete_done() abort "{{{
 
   if neocomplete.event !=# 'mapping'
         \ && !s:is_delimiter() && !get(neocomplete, 'refresh', 0)
+        \ && !s:isBackspace
     call neocomplete#mappings#close_popup()
   endif
 
