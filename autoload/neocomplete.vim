@@ -278,7 +278,6 @@ function! neocomplete#complete_check() abort "{{{
 endfunction"}}}
 function! neocomplete#skip_next_complete() abort "{{{
   let neocomplete = neocomplete#get_current_neocomplete()
-  call neocomplete#print_error("set skip_next_complete neocomplete 281 " . 1)
   let neocomplete.skip_next_complete = 1
 endfunction"}}}
 function! neocomplete#get_default_matchers() abort "{{{

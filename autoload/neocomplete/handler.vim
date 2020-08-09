@@ -25,48 +25,27 @@
 
 let s:lastCol = col('.')
 let s:isBackspace = 0
-let g:backspace_pressed = 0
-" autocmd InsertCharPre,InsertLeave * let g:backspace_pressed = 0
-" inoremap <bs> <c-h><c-o>:let g:backspace_pressed=1<cr>
-" " xshell ssh connect linux setting
-" inoremap <c-h> <c-h><c-o>:let g:backspace_pressed=1<cr>
-
-" " inoremap <expr> <bs> <SID>s:onBackspace()
-" inoremap <silent> <bs> <C-h><c-o>=<SID>onBackspace()<CR>
-" inoremap <bs> <bs>=<SID>onBackspace()<cr>
-" function! s:onBackspace() abort
-  " call neocomplete#print_error("onBackspace")
-  " let g:backspace_pressed = 1
-" endfunction
 
 let s:save_cpo = &cpo
 set cpo&vim
 
 function! neocomplete#handler#_on_moved_i() abort "{{{
-  call neocomplete#print_warning("_on_moved_i")
-  call neocomplete#print_warning("_on_moved_i curcol " . col('.'))
-  call neocomplete#print_warning("_on_moved_i lastcol " . s:lastCol)
   if col('.') > s:lastCol
-    call neocomplete#print_warning("_on_moved_i === ")
     let s:isBackspace = 0
   else
-    call neocomplete#print_warning("_on_moved_i 2=== ")
     let s:isBackspace = 1
   endif
-  call neocomplete#print_warning("_on_moved_i isback " . s:isBackspace)
   let s:lastCol = col('.')
+  
   let neocomplete = neocomplete#get_current_neocomplete()
   if neocomplete.linenr != line('.')
     call neocomplete#helper#clear_result()
   endif
   let neocomplete.linenr = line('.')
 
-  " if g:backspace_pressed == 0
-    call s:close_preview_window()
-  " endif
+  call s:close_preview_window()
 endfunction"}}}
 function! neocomplete#handler#_on_insert_enter() abort "{{{
-  call neocomplete#print_warning("_on_insert_enter")
   if !neocomplete#is_enabled()
     return
   endif
@@ -82,25 +61,20 @@ function! neocomplete#handler#_on_insert_enter() abort "{{{
   endif
 endfunction"}}}
 function! neocomplete#handler#_on_insert_leave() abort "{{{
-  call neocomplete#print_warning("_on_insert_leave")
   call neocomplete#helper#clear_result()
 
-  " if g:backspace_pressed == 0
-    call s:close_preview_window()
-  " endif
+  call s:close_preview_window()
   call s:make_cache_current_line()
 
   let neocomplete = neocomplete#get_current_neocomplete()
   let neocomplete.cur_text = ''
 endfunction"}}}
 function! neocomplete#handler#_on_complete_done() abort "{{{
-  call neocomplete#print_warning("_on_complete_done")
   let neocomplete = neocomplete#get_current_neocomplete()
 
   if neocomplete.event !=# 'mapping'
         \ && !s:is_delimiter() && !get(neocomplete, 'refresh', 0)
         \ && !s:isBackspace
-    call neocomplete#print_warning("_on_complete_done 90")
     call neocomplete#mappings#close_popup()
   endif
 
@@ -122,7 +96,6 @@ function! neocomplete#handler#_on_complete_done() abort "{{{
   endif
 endfunction"}}}
 function! neocomplete#handler#_on_insert_char_pre() abort "{{{
-  call neocomplete#print_error("_on_insert_char_pre " . v:char)
   let neocomplete = neocomplete#get_current_neocomplete()
   let neocomplete.skip_next_complete = 0
 
@@ -138,25 +111,17 @@ function! neocomplete#handler#_on_insert_char_pre() abort "{{{
   let neocomplete.old_char = v:char
 endfunction"}}}
 function! neocomplete#handler#_on_text_changed() abort "{{{
-  call neocomplete#print_warning("_on_text_changed")
-
-  " matchstr(getline('.'), '\%' . col('.') . 'c.')
-
   if neocomplete#is_cache_disabled()
-    call neocomplete#print_warning("_on_text_changed 128")
     return
   endif
 
   if getline('.') == ''
-    call neocomplete#print_warning("_on_text_changed 133")
     call s:make_cache_current_line()
   endif
 
   if !neocomplete#util#is_text_changed()
-    call neocomplete#print_warning("_on_text_changed 138")
     call s:indent_current_line()
   endif
-  call neocomplete#print_warning("_on_text_changed 141")
 endfunction"}}}
 
 function! s:complete_delay(timer) abort "{{{
@@ -191,8 +156,6 @@ function! neocomplete#handler#_do_auto_complete(event) abort "{{{
 endfunction"}}}
 
 function! s:do_auto_complete(event) abort "{{{
-  call neocomplete#print_warning("do_auto_complete")
-
   let neocomplete = neocomplete#get_current_neocomplete()
 
   if s:check_in_do_auto_complete(a:event)
@@ -214,7 +177,7 @@ function! s:do_auto_complete(event) abort "{{{
   try
     " Prevent infinity loop.
     if s:is_skip_auto_complete(cur_text)
-      call neocomplete#print_debug('Skipped. 203')
+      call neocomplete#print_debug('Skipped.')
       return
     endif
 
@@ -227,7 +190,7 @@ function! s:do_auto_complete(event) abort "{{{
     if cur_text =~ '^\s*$'
           \ || (!neocomplete#is_eskk_enabled()
           \     && neocomplete#is_multibyte_input(cur_text))
-      call neocomplete#print_debug('Skipped. 216')
+      call neocomplete#print_debug('Skipped.')
       return
     endif
 
@@ -275,12 +238,7 @@ function! s:is_skip_auto_complete(cur_text) abort "{{{
     return 1
   endif
 
-  " if g:backspace_pressed == 1
-      " return 0
-  " endif
-
   let skip = neocomplete.skip_next_complete
-  call neocomplete#print_error("is_skip_auto_complete " . skip)
 
   if !skip || s:is_delimiter()
     return 0

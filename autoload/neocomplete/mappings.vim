@@ -118,7 +118,6 @@ function! neocomplete#mappings#close_popup() abort "{{{
   let neocomplete = neocomplete#get_current_neocomplete()
   let neocomplete.complete_str = ''
   let neocomplete.old_cur_text = neocomplete#get_cur_text(1)
-  call neocomplete#print_error("set skip_next_complete mapping 121 " . 1)
   let neocomplete.skip_next_complete = 1
 
   return pumvisible() ? "\<C-y>" : ''
@@ -133,7 +132,6 @@ function! neocomplete#mappings#cancel_popup() abort "{{{
     let neocomplete.old_complete_pos += 1
   endif
   let neocomplete.old_linenr = line('.')
-  call neocomplete#print_error("set skip_next_complete mapping 136 " . 1)
   let neocomplete.skip_next_complete = 1
 
   return pumvisible() ? "\<C-e>" : ''
