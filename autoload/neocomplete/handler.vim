@@ -23,6 +23,12 @@
 " }}}
 "=============================================================================
 
+let g:backspace_pressed = 0
+autocmd InsertCharPre,InsertLeave * let g:backspace_pressed = 0
+inoremap <bs> <c-h><c-o>:let g:backspace_pressed=1<cr>
+" xshell ssh connect linux setting
+inoremap <c-h> <c-h><c-o>:let g:backspace_pressed=1<cr>
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -85,6 +91,7 @@ function! neocomplete#handler#_on_complete_done() abort "{{{
   endif
 endfunction"}}}
 function! neocomplete#handler#_on_insert_char_pre() abort "{{{
+  call neocomplete#print_error("_on_insert_char_pre 94")
   let neocomplete = neocomplete#get_current_neocomplete()
   let neocomplete.skip_next_complete = 0
 
@@ -153,6 +160,7 @@ function! s:do_auto_complete(event) abort "{{{
 
   let neocomplete.skipped = 0
   let neocomplete.event = a:event
+  call neocomplete#print_error("do_auto_complete 163")
   call neocomplete#helper#clear_result()
 
   " Set context filetype.
@@ -225,6 +233,10 @@ function! s:is_skip_auto_complete(cur_text) abort "{{{
         \     && strdisplaywidth(a:cur_text) >= &l:textwidth)
     let neocomplete.skip_next_complete = 0
     return 1
+  endif
+
+  if g:backspace_pressed == 1
+      return 0
   endif
 
   let skip = neocomplete.skip_next_complete

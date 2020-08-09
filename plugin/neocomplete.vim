@@ -48,7 +48,7 @@ command! -nargs=0 -bar NeoCompleteClean
 
 " Global options definition. "{{{
 let g:neocomplete#enable_debug =
-      \ get(g:, 'neocomplete#enable_debug', 0)
+      \ get(g:, 'neocomplete#enable_debug', 1)
 if get(g:, 'neocomplete#enable_at_startup', 0)
   augroup neocomplete
     " Enable startup.
