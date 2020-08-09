@@ -26,6 +26,8 @@
 let g:backspace_pressed = 0
 autocmd InsertCharPre,InsertLeave * let g:backspace_pressed = 0
 inoremap <bs> <c-h><c-o>:let g:backspace_pressed=1<cr>
+" xshell ssh connect linux setting
+inoremap <c-h> <c-h><c-o>:let g:backspace_pressed=1<cr>
 
 let s:save_cpo = &cpo
 set cpo&vim
