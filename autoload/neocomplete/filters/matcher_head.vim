@@ -44,7 +44,7 @@ do
   local candidates = vim.eval('a:context.candidates')
   if vim.eval('&ignorecase') ~= 0 then
     pattern = string.lower(pattern)
-    for i = #candidates, 1, -1 do
+    for i = #candidates-1, 0, -1 do
       local word = vim.type(candidates[i]) == 'dict' and
       string.lower(candidates[i].word) or string.lower(candidates[i])
       if string.find(word, pattern, 1) == nil then
@@ -52,7 +52,7 @@ do
       end
     end
   else
-    for i = #candidates, 1, -1 do
+    for i = #candidates-1, 0, -1 do
       local word = vim.type(candidates[i]) == 'dict' and
       candidates[i].word or candidates[i]
       if string.find(word, pattern, 1) == nil then

@@ -42,7 +42,7 @@ do
   local t = {}
   local input = string.lower(vim.eval('a:context.input'))
   for i = 1, #candidates do
-    t[i] = candidates[i]
+    t[i] = candidates[i-1]
     local ti = t[i]
 
     -- Match position.
@@ -60,8 +60,8 @@ do
         return (a.rank == b.rank) and (a.neocomplete__match
             < b.neocomplete__match) or (a.rank > b.rank)
       end)
-  for i = 1, #candidates do
-    candidates[i] = t[i]
+  for i = 0, #candidates-1 do
+    candidates[i] = t[i+1]
   end
 end
 EOF

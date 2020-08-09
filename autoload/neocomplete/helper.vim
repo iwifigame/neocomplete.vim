@@ -163,7 +163,7 @@ do
   local pattern_var = vim.eval('a:pattern_var')
 
   local dup_check = {}
-  for i = 1, #filetypes do
+  for i = 0, #filetypes-1 do
     local ft = filetypes[i]
 
     -- Composite filetype.
@@ -290,11 +290,11 @@ do
   local candidates = vim.eval('a:candidates')
   local t = {}
   for i = 1, #candidates do
-    t[i] = candidates[i]
+    t[i] = candidates[i-1]
   end
   table.sort(t, function(a, b) return a.word < b.word end)
-  for i = 1, #candidates do
-    candidates[i] = t[i]
+  for i = 0, #candidates-1 do
+    candidates[i] = t[i+1]
   end
 end
 EOF
