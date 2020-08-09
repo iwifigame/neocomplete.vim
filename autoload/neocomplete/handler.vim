@@ -23,6 +23,10 @@
 " }}}
 "=============================================================================
 
+let g:backspace_pressed = 0
+autocmd InsertCharPre,InsertLeave * let g:backspace_pressed = 0
+inoremap <bs> <c-h><c-o>:let g:backspace_pressed=1<cr>
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -225,6 +229,10 @@ function! s:is_skip_auto_complete(cur_text) abort "{{{
         \     && strdisplaywidth(a:cur_text) >= &l:textwidth)
     let neocomplete.skip_next_complete = 0
     return 1
+  endif
+
+  if g:backspace_pressed == 1
+      return 0
   endif
 
   let skip = neocomplete.skip_next_complete
