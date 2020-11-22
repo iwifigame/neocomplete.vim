@@ -44,7 +44,7 @@ function! s:matcher.filter(context) abort "{{{
 do
   local candidates = vim.eval('a:context.candidates')
   local len = string.len(vim.eval('a:context.complete_str'))
-  for i = #candidates-1, 0, -1 do
+  for i = #candidates, 1, -1 do
     local word = vim.type(candidates[i]) == 'dict' and
     candidates[i].word or candidates[i]
     if string.len(word) <= len then
